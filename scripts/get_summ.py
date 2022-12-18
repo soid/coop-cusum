@@ -47,12 +47,29 @@ def yelp(output_dir):
     json.dump(ins[100:], open(output_dir / "test.json", "w"))
 
 
+def culpa(output_dir):
+    # create dev and test sets
+    output_dir = Path(output_dir)
+    output_dir.mkdir(exist_ok=True)
+    test_file = requests.get("https://raw.githubusercontent.com/soid/culpa-sum-dataset/main/culpa.test.jsonl").content.decode()
+    ins = []
+    for x in test_file.split("\n"):
+        if x:
+            obj = json.loads(x)
+            ins.append(obj)
+    # no need to separate dev and test sets since it is unsupervised learning setting
+    json.dump(ins, open(output_dir / "dev.json", "w"))
+    json.dump(ins, open(output_dir / "test.json", "w"))
+
+
 @click.command()
-@click.argument("data_type", type=click.Choice(("yelp", "amzn")), )
+@click.argument("data_type", type=click.Choice(("yelp", "amzn", "culpa")), )
 @click.argument("data_dir", type=click.Path() )
 def main(data_type, data_dir):
     if data_type == "yelp":
         yelp(data_dir)
+    elif data_type == "culpa":
+        culpa(data_dir)
     else:
         amzn(data_dir)
 

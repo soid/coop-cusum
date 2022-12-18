@@ -24,7 +24,7 @@ def spm_train(train_file,
     spm.SentencePieceTrainer.Train(input=tmp_path,
                                    model_prefix=model_prefix,
                                    model_type="bpe",
-                                   vocab_size=32000,
+                                   vocab_size=22000,
                                    max_sentence_length=8192,
                                    character_coverage=1.,
                                    num_threads=cpu_count(),
@@ -38,7 +38,7 @@ def spm_train(train_file,
                                    unk_id=3)
 
     os.remove(tmp_path)
-ø
+#ø
 
 if __name__ == '__main__':
     spm_train()
